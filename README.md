@@ -1,7 +1,7 @@
 # CanSBG
 SBL grades for view all grades on Canvas
 
-## SBL => letter
+## SBL -> letter
 - A  =  3.25  -  4.0
 - B  =  2.5   -  3.24
 - C  =  2.0   -  2.49
