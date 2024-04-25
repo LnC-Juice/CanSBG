@@ -24,10 +24,10 @@ SBL grades for view all grades on Canvas
 
 ![example](/Example.png)
 
-non-SBL
-67.86 -> D
+non-SBL  
+67.86 -> D  
 84.38 -> B
 
-SBL
-67.86 -> B
+SBL  
+67.86 -> B  
 84.38 -> A
