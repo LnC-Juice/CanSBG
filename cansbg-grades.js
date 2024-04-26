@@ -11,6 +11,27 @@ const C = [...Array(6249).keys()].slice(5000);
 const D = [...Array(4999).keys()].slice(3750);
 const F = [...Array(3749).keys()];
 
+
+function apce_check() {
+    for (let i of document.querySelectorAll('#content table.course_details.student_grades tr .course a')) {
+        if (!(
+            (i.textContent[0] === '*') |
+            (i.textContent.slice(1,3) === 'CE') |
+            (i.textContent.slice(1,3) === 'AP') |
+            (i.textContent.slice(0,24) === 'Certified Ethical Hacker') | // CEH /= SBG
+            (i.parentElement.parentElement.querySelector('.percent:not(.cansbg)').textContent == 'no grade') |
+            (i.parentElement.parentElement.querySelector('.percent:not(.cansbg)').textContent == '--')
+            )) {
+                i.parentElement.querySelector('input').setAttribute('checked', ' ')
+        }
+        buttonupdate(i.parentElement.querySelector('input'))
+    }
+}
+
+
+// Certified Ethical Hacker // class name
+
+
 function rendergrades() {   
     for (let i of document.querySelectorAll('#content table.course_details.student_grades tr')) {
         if (i.getAttribute('cansbg') == 'true') {
@@ -18,7 +39,7 @@ function rendergrades() {
                 let _letter_td = letter_td.cloneNode()
                 i.insertBefore(_letter_td, i.querySelector('.percent'))
             } else {
-                i.querySelector('.percent.cansbg').stye.display = ''
+                i.querySelector('.percent.cansbg').style.display = ''
             }
             let percent = parseFloat(i.querySelector('.percent:not(.cansbg)').textContent.split('%')[0])
             let letter = ''
@@ -74,5 +95,6 @@ window.addEventListener('pageshow', function() {
         i.querySelector('form').style.margin = '0 20px 0 0'
     }
     document.querySelectorAll('#content table.course_details.student_grades tr td.course form input').forEach(x => x.addEventListener('click', function() {buttonupdate(x)}))
+    apce_check()
     rendergrades()
 })
