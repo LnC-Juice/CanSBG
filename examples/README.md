@@ -1,1 +1,1 @@
-to use the HTMLs it my be best to create a apache server to attach the manifest to.
+To use the HTMLs it may be best to create an Apache server to attach the manifest too.
