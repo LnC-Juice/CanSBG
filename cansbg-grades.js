@@ -11,6 +11,18 @@ const C = [...Array(6249).keys()].slice(5000);
 const D = [...Array(4999).keys()].slice(3750);
 const F = [...Array(3749).keys()];
 
+// elements to clone later
+let apce = document.createElement('div')
+apce.setAttribute('class', 'cansbg')
+let apce_form = document.createElement('form')
+let apce_form_input = document.createElement('input')
+apce_form_input.setAttribute('type', 'checkbox')
+apce_form_input.style.filter = 'grayscale(0.5)'
+
+let td = document.createElement('td')
+td.setAttribute('class', 'percent cansbg') // percent to copy css
+
+
 
 function apce_check() {
     for (let i of document.querySelectorAll('#content table.course_details.student_grades tr .course a')) {
@@ -29,57 +41,74 @@ function apce_check() {
 }
 
 
-// Certified Ethical Hacker // class name
+
+function rendergrades_sbg(i) { // split for modularity
+    if (!i.querySelector('.percent.sbg.cansbg')) {
+        let _td = td.cloneNode()
+        _td.setAttribute('class', _td.getAttribute('class') + ' sbg')
+        i.insertBefore(_td, i.querySelector('.percent:not(.cansbg)'))
+    } else {
+        i.querySelector('.percent.sbg.cansbg').style.display = ''
+    }
+    let percent = parseFloat(i.querySelector('.percent:not(.cansbg)').textContent.split('%')[0])
+    if (!isNaN(percent)) {
+        let sbg = Math.round(percent/10*4)/10 + '/4'
+        i.querySelector('.percent.sbg.cansbg').textContent = sbg
+    }
+    i.querySelector('.percent:not(.cansbg)').style.display = 'none'
+}
+
+
+function rendergrades_letter(i) { // split for modularity
+    if (!i.querySelector('.percent.letter.cansbg')) {
+        let _td = td.cloneNode()
+        _td.setAttribute('class', _td.getAttribute('class') + ' letter')
+        i.insertBefore(_td, i.querySelector('.percent:not(.cansbg)'))
+    } else {
+        i.querySelector('.percent.letter.cansbg').style.display = ''
+    }
+    let percent = parseFloat(i.querySelector('.percent:not(.cansbg)').textContent.split('%')[0])
+    if (!isNaN(percent)) {
+        let letter = ''
+        if (A.includes(parseInt(percent*100))) {
+            letter = 'A';
+        } else if (B.includes(parseInt(percent*100))) {
+            letter = 'B';
+        } else if (C.includes(parseInt(percent*100))) {
+            letter = 'C';
+        } else if (D.includes(parseInt(percent*100))) {
+            letter = 'D';
+        } else if (F.includes(parseInt(percent*100))) {
+            letter = 'F';
+        } else {
+            console.log('err in letter/gpa calc');
+        };
+        i.querySelector('.percent.letter.cansbg').textContent = letter
+    }
+    i.querySelector('.percent:not(.cansbg)').style.display = 'none'
+}
+
 
 
 function rendergrades() {   
     for (let i of document.querySelectorAll('#content table.course_details.student_grades tr')) {
         if (i.getAttribute('cansbg') == 'true') {
-            if (!i.querySelector('.percent.cansbg')) {
-                let _letter_td = letter_td.cloneNode()
-                i.insertBefore(_letter_td, i.querySelector('.percent'))
-            } else {
-                i.querySelector('.percent.cansbg').style.display = ''
-            }
-            let percent = parseFloat(i.querySelector('.percent:not(.cansbg)').textContent.split('%')[0])
-            let letter = ''
-            if (A.includes(parseInt(percent*100))) {
-                letter = 'A';
-            } else if (B.includes(parseInt(percent*100))) {
-                letter = 'B';
-            } else if (C.includes(parseInt(percent*100))) {
-                letter = 'C';
-            } else if (D.includes(parseInt(percent*100))) {
-                letter = 'D';
-            } else if (F.includes(parseInt(percent*100))) {
-                letter = 'F';
-            } else {
-                console.log('err in letter/gpa calc');
-            };
-            i.querySelector('.percent:not(.cansbg)').style.display = 'none'
-            i.querySelector('.percent.cansbg').textContent = letter
+            rendergrades_sbg(i)
+            rendergrades_letter(i)
         } else {
             if (i.querySelector('.percent.cansbg')) {
-                i.querySelector('.percent.cansbg').style.display = 'none'
+                i.querySelectorAll('.percent.cansbg').forEach(x => x.style.display = 'none')
                 i.querySelector('.percent:not(.cansbg)').style.display = ''
             }
         }
     }
 }
 
+
 function buttonupdate(x) {
     x.parentElement.parentElement.parentElement.parentElement.setAttribute('cansbg', x.checked) // tr
     rendergrades()
 }
-
-let apce = document.createElement('div')
-apce.setAttribute('class', 'cansbg')
-let apce_form = document.createElement('form')
-let apce_form_input = document.createElement('input')
-apce_form_input.setAttribute('type', 'checkbox')
-
-let letter_td = document.createElement('td')
-letter_td.setAttribute('class', 'percent cansbg')
 
 
 
@@ -94,7 +123,7 @@ window.addEventListener('pageshow', function() {
         i.style.display = 'flex'
         i.querySelector('form').style.margin = '0 20px 0 0'
     }
-    document.querySelectorAll('#content table.course_details.student_grades tr td.course form input').forEach(x => x.addEventListener('click', function() {buttonupdate(x)}))
+    document.querySelectorAll('#content table.course_details.student_grades tr td.course form input').forEach(x => x.addEventListener('click', function() {buttonupdate(x)})) // for whatever reason ```x.addEventListener('click', buttonupdate(x)))``` dosen't work
     apce_check()
     rendergrades()
 })
