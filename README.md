@@ -22,7 +22,7 @@ SBL grades for view all grades on Canvas
 - D  =  37.5  -  49.75
 - F  =  0     -  37.25
 
-![example](/Example.png)
+![example](examples/example.png)
 
 non-SBL  
 67.86 -> D  
