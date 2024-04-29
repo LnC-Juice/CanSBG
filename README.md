@@ -1,3 +1,12 @@
+Canvas is now supporting Raw grades allowing to display in a x/4 and a letter.  
+View all grades pages still only display a percentage (SBG to percent with no translation layer).  
+This means when a B (2.5/4 - 3.24/4) is in percent (62.5 - 81) and then translated to letter to it becomes B to D.
+
+Since SBG is a diffrent grading system to traditional, SBG% != %.  
+Instead to translate from SBG% to letter use the table for SBL percent -> letter.
+
+
+
 # CanSBG
 SBL grades for view all grades on Canvas
 
