@@ -19,11 +19,17 @@
 // F = 0 - 37.25
 
 // arrays are * 100
-const A = [...Array(10000).keys()].slice(8125);
-const B = [...Array(8124).keys()].slice(6250);
-const C = [...Array(6249).keys()].slice(5000);
-const D = [...Array(4999).keys()].slice(3750);
-const F = [...Array(3749).keys()];
+const SBL_A = [...Array(10001).keys()].slice(8125);
+const SBL_B = [...Array(8125).keys()].slice(6250);
+const SBL_C = [...Array(6250).keys()].slice(5000);
+const SBL_D = [...Array(5000).keys()].slice(3750);
+const SBL_F = [...Array(3750).keys()];
+
+const A = [...Array(10001).keys()].slice(9000);
+const B = [...Array(9000).keys()].slice(8000);
+const C = [...Array(8000).keys()].slice(7000);
+const D = [...Array(7000).keys()].slice(6000);
+const F = [...Array(6000).keys()];
 
 // elements to clone later
 let apce = document.createElement('div')
@@ -55,8 +61,7 @@ function apce_check() {
 }
 
 
-
-function rendergrades_sbg(i) { // split for modularity
+function rendergrade_sbg(i) { // split for modularity
     if (!i.querySelector('.percent.sbg.cansbg')) {
         let _td = td.cloneNode()
         _td.setAttribute('class', _td.getAttribute('class') + ' sbg')
@@ -72,8 +77,7 @@ function rendergrades_sbg(i) { // split for modularity
     i.querySelector('.percent:not(.cansbg)').style.display = 'none'
 }
 
-
-function rendergrades_letter(i) { // split for modularity
+function rendergrade_letter(i) { // split for modularity
     if (!i.querySelector('.percent.letter.cansbg')) {
         let _td = td.cloneNode()
         _td.setAttribute('class', _td.getAttribute('class') + ' letter')
@@ -83,6 +87,39 @@ function rendergrades_letter(i) { // split for modularity
     }
     let percent = parseFloat(i.querySelector('.percent:not(.cansbg)').textContent.split('%')[0])
     if (!isNaN(percent)) {
+        let letter = ''
+        if (SBL_A.includes(parseInt(percent*100))) {
+            letter = 'A';
+        } else if (SBL_B.includes(parseInt(percent*100))) {
+            letter = 'B';
+        } else if (SBL_C.includes(parseInt(percent*100))) {
+            letter = 'C';
+        } else if (SBL_D.includes(parseInt(percent*100))) {
+            letter = 'D';
+        } else if (SBL_F.includes(parseInt(percent*100))) {
+            letter = 'F';
+        } else {
+            console.log('err in letter/gpa calc');
+        };
+        i.querySelector('.percent.letter.cansbg').textContent = letter;
+    }
+    i.querySelector('.percent:not(.cansbg)').style.display = 'none'
+    if (i.querySelector('.percent.apce_letter.cansbg')) {
+        i.querySelector('.percent.apce_letter.cansbg').style.display = 'none'
+    }
+}
+
+function rendergrade_apce_letter(i) {
+    if (!i.querySelector('.percent.apce_letter.cansbg')) {
+        let _td = td.cloneNode()
+        _td.setAttribute('class', _td.getAttribute('class') + ' apce_letter')
+        i.insertBefore(_td, i.querySelector('.grading_period_dropdown'))
+    } else {
+        i.querySelector('.percent.apce_letter.cansbg').style.display = ''
+    }
+    let percent = parseFloat(i.querySelector('.percent:not(.cansbg)').textContent.split('%')[0])
+    if (!isNaN(percent)) {
+        console.log(parseInt(percent*100))
         let letter = ''
         if (A.includes(parseInt(percent*100))) {
             letter = 'A';
@@ -97,31 +134,34 @@ function rendergrades_letter(i) { // split for modularity
         } else {
             console.log('err in letter/gpa calc');
         };
-        i.querySelector('.percent.letter.cansbg').textContent = letter
+        i.querySelector('.percent.apce_letter.cansbg').textContent = letter;
     }
-    i.querySelector('.percent:not(.cansbg)').style.display = 'none'
 }
 
 
-
-function rendergrades() {   
-    for (let i of document.querySelectorAll('#content table.course_details.student_grades tr')) {
-        if (i.getAttribute('cansbg') == 'true') {
-            rendergrades_sbg(i)
-            rendergrades_letter(i)
-        } else {
-            if (i.querySelector('.percent.cansbg')) {
-                i.querySelectorAll('.percent.cansbg').forEach(x => x.style.display = 'none')
-                i.querySelector('.percent:not(.cansbg)').style.display = ''
-            }
+function rendergrade(i) {   
+    if (i.getAttribute('cansbg') == 'true') {
+        rendergrade_sbg(i)
+        rendergrade_letter(i)
+    } else {
+        if (i.querySelector('.percent.cansbg')) {
+            i.querySelectorAll('.percent.cansbg').forEach(x => x.style.display = 'none')
+            i.querySelector('.percent:not(.cansbg)').style.display = ''
+        rendergrade_apce_letter(i)
         }
+    }
+}
+
+function rendergrades() { // seperated for performance
+    for (let i of document.querySelectorAll('#content table.course_details.student_grades tr')) {
+        rendergrade(i)
     }
 }
 
 
 function buttonupdate(x) {
     x.parentElement.parentElement.parentElement.parentElement.setAttribute('cansbg', x.checked) // tr
-    rendergrades()
+    rendergrade(x.parentElement.parentElement.parentElement.parentElement) // tr
 }
 
 
@@ -137,7 +177,9 @@ window.addEventListener('pageshow', function() {
         i.style.display = 'flex'
         i.querySelector('form').style.margin = '0 20px 0 0'
     }
+
     document.querySelectorAll('#content table.course_details.student_grades tr td.course form input').forEach(x => x.addEventListener('click', function() {buttonupdate(x)})) // for whatever reason ```x.addEventListener('click', buttonupdate(x)))``` dosen't work
-    apce_check()
+
     rendergrades()
+    apce_check()
 })
