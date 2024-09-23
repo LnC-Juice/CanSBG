@@ -2,12 +2,13 @@
   "manifest_version": 3,
   "name": "CanSBG",
   "description": "Canvas view all grades for SBG",
-  "version": "0.0.1",
+  "version": "0.0.2",
 
   "content_scripts": [
     {
       "matches": [
-        "https://stem.instructure.com/grades"
+        "https://stem.instructure.com/grades",
+        "https://lnc-juice.github.io/example/cansbg/"
       ],
       "js": ["cansbg-grades.js"]
     }

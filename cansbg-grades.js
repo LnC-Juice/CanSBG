@@ -32,15 +32,15 @@ const D = [...Array(7000).keys()].slice(6000);
 const F = [...Array(6000).keys()];
 
 // elements to clone later
-let apce = document.createElement('div')
-apce.setAttribute('class', 'cansbg')
-let apce_form = document.createElement('form')
-let apce_form_input = document.createElement('input')
-apce_form_input.setAttribute('type', 'checkbox')
-apce_form_input.style.filter = 'grayscale(0.5)'
+let apce = document.createElement('div');
+apce.setAttribute('class', 'cansbg');
+let apce_form = document.createElement('form');
+let apce_form_input = document.createElement('input');
+apce_form_input.setAttribute('type', 'checkbox');
+apce_form_input.style.filter = 'grayscale(0.5)';
 
-let td = document.createElement('td')
-td.setAttribute('class', 'percent cansbg') // percent to copy css
+let td = document.createElement('td');
+td.setAttribute('class', 'percent cansbg'); // percent to copy css
 
 
 
@@ -54,40 +54,52 @@ function apce_check() {
             (i.parentElement.parentElement.querySelector('.percent:not(.cansbg)').textContent == 'no grade') |
             (i.parentElement.parentElement.querySelector('.percent:not(.cansbg)').textContent == '--')
             )) {
-                i.parentElement.querySelector('input').setAttribute('checked', ' ')
+                i.parentElement.querySelector('input').setAttribute('checked', ' ');
         }
-        buttonupdate(i.parentElement.querySelector('input'))
+        buttonupdate(i.parentElement.querySelector('input'));
     }
 }
 
 
 function rendergrade_sbg(i) { // split for modularity
     if (!i.querySelector('.percent.sbg.cansbg')) {
-        let _td = td.cloneNode()
-        _td.setAttribute('class', _td.getAttribute('class') + ' sbg')
-        i.insertBefore(_td, i.querySelector('.percent:not(.cansbg)'))
+        let _td = td.cloneNode();
+        _td.setAttribute('class', _td.getAttribute('class') + ' sbg');
+        i.insertBefore(_td, i.querySelector('.percent:not(.cansbg)'));
     } else {
-        i.querySelector('.percent.sbg.cansbg').style.display = ''
+        i.querySelector('.percent.sbg.cansbg').style.display = '';
     }
-    let percent = parseFloat(i.querySelector('.percent:not(.cansbg)').textContent.split('%')[0])
+    let percent = i.querySelector('.percent:not(.cansbg)');
+    if (isNaN(percent)) {
+        percent = parseFloat(percent.textContent.split('%')[0]);
+    }
+    else {
+        return;
+    }
     if (!isNaN(percent)) {
-        let sbg = Math.round(percent/10*4)/10 + '/4'
-        i.querySelector('.percent.sbg.cansbg').textContent = sbg
+        let sbg = Math.round(percent/10*4)/10 + '/4';
+        i.querySelector('.percent.sbg.cansbg').textContent = sbg;
     }
-    i.querySelector('.percent:not(.cansbg)').style.display = 'none'
+    i.querySelector('.percent:not(.cansbg)').style.display = 'none';
 }
 
 function rendergrade_letter(i) { // split for modularity
     if (!i.querySelector('.percent.letter.cansbg')) {
-        let _td = td.cloneNode()
-        _td.setAttribute('class', _td.getAttribute('class') + ' letter')
-        i.insertBefore(_td, i.querySelector('.percent:not(.cansbg)'))
+        let _td = td.cloneNode();
+        _td.setAttribute('class', _td.getAttribute('class') + ' letter');
+        i.insertBefore(_td, i.querySelector('.percent:not(.cansbg)'));
     } else {
-        i.querySelector('.percent.letter.cansbg').style.display = ''
+        i.querySelector('.percent.letter.cansbg').style.display = '';
     }
-    let percent = parseFloat(i.querySelector('.percent:not(.cansbg)').textContent.split('%')[0])
+    let percent = i.querySelector('.percent:not(.cansbg)');
+    if (isNaN(percent)) {
+        percent = parseFloat(percent.textContent.split('%')[0]);
+    }
+    else {
+        return;
+    }
     if (!isNaN(percent)) {
-        let letter = ''
+        let letter = '';
         if (SBL_A.includes(parseInt(percent*100))) {
             letter = 'A';
         } else if (SBL_B.includes(parseInt(percent*100))) {
@@ -99,28 +111,33 @@ function rendergrade_letter(i) { // split for modularity
         } else if (SBL_F.includes(parseInt(percent*100))) {
             letter = 'F';
         } else {
-            console.log('err in letter/gpa calc');
+            console.error('err in letter/gpa calc');
         };
         i.querySelector('.percent.letter.cansbg').textContent = letter;
     }
-    i.querySelector('.percent:not(.cansbg)').style.display = 'none'
+    i.querySelector('.percent:not(.cansbg)').style.display = 'none';
     if (i.querySelector('.percent.apce_letter.cansbg')) {
-        i.querySelector('.percent.apce_letter.cansbg').style.display = 'none'
+        i.querySelector('.percent.apce_letter.cansbg').style.display = 'none';
     }
 }
 
 function rendergrade_apce_letter(i) {
     if (!i.querySelector('.percent.apce_letter.cansbg')) {
-        let _td = td.cloneNode()
-        _td.setAttribute('class', _td.getAttribute('class') + ' apce_letter')
-        i.insertBefore(_td, i.querySelector('.grading_period_dropdown'))
+        let _td = td.cloneNode();
+        _td.setAttribute('class', _td.getAttribute('class') + ' apce_letter');
+        i.insertBefore(_td, i.querySelector('.grading_period_dropdown'));
     } else {
-        i.querySelector('.percent.apce_letter.cansbg').style.display = ''
+        i.querySelector('.percent.apce_letter.cansbg').style.display = '';
     }
-    let percent = parseFloat(i.querySelector('.percent:not(.cansbg)').textContent.split('%')[0])
+    let percent = i.querySelector('.percent:not(.cansbg)');
+    if (isNaN(percent)) {
+        percent = parseFloat(percent.textContent.split('%')[0]);
+    }
+    else {
+        return;
+    }
     if (!isNaN(percent)) {
-        console.log(parseInt(percent*100))
-        let letter = ''
+        let letter = '';
         if (A.includes(parseInt(percent*100))) {
             letter = 'A';
         } else if (B.includes(parseInt(percent*100))) {
@@ -132,54 +149,54 @@ function rendergrade_apce_letter(i) {
         } else if (F.includes(parseInt(percent*100))) {
             letter = 'F';
         } else {
-            console.log('err in letter/gpa calc');
+            console.error('err in letter/gpa calc');
         };
         i.querySelector('.percent.apce_letter.cansbg').textContent = letter;
     }
 }
 
-
 function rendergrade(i) {   
     if (i.getAttribute('cansbg') == 'true') {
-        rendergrade_sbg(i)
-        rendergrade_letter(i)
+        rendergrade_sbg(i);
+        rendergrade_letter(i);
     } else {
         if (i.querySelector('.percent.cansbg')) {
-            i.querySelectorAll('.percent.cansbg').forEach(x => x.style.display = 'none')
-            i.querySelector('.percent:not(.cansbg)').style.display = ''
-        rendergrade_apce_letter(i)
+            i.querySelectorAll('.percent.cansbg').forEach(x => x.style.display = 'none');
+            i.querySelector('.percent:not(.cansbg)').style.display = '';
+            rendergrade_apce_letter(i);
         }
     }
 }
 
 function rendergrades() { // seperated for performance
     for (let i of document.querySelectorAll('#content table.course_details.student_grades tr')) {
-        rendergrade(i)
+        rendergrade(i);
     }
 }
 
 
 function buttonupdate(x) {
-    x.parentElement.parentElement.parentElement.parentElement.setAttribute('cansbg', x.checked) // tr
-    rendergrade(x.parentElement.parentElement.parentElement.parentElement) // tr
+    x.parentElement.parentElement.parentElement.parentElement.setAttribute('cansbg', x.checked); // tr
+    rendergrade(x.parentElement.parentElement.parentElement.parentElement); // tr
 }
 
 
 
 window.addEventListener('pageshow', function() {
     for (let i of document.querySelectorAll('#content table.course_details.student_grades tr td.course')) {
-        let ac = apce.cloneNode()
-        let ac_form = apce_form.cloneNode()
-        let ac_form_input = apce_form_input.cloneNode()
-        ac_form.appendChild(ac_form_input)
-        ac.appendChild(ac_form)
-        i.insertBefore(ac, i.firstChild)
-        i.style.display = 'flex'
-        i.querySelector('form').style.margin = '0 20px 0 0'
+        let ac = apce.cloneNode();
+        let ac_form = apce_form.cloneNode();
+        let ac_form_input = apce_form_input.cloneNode();
+        ac_form.appendChild(ac_form_input);
+        ac.appendChild(ac_form);
+        i.insertBefore(ac, i.firstChild);
+        i.style.display = 'flex';
+        i.querySelector('form').style.margin = '0 20px 0 0';
+        rendergrade_apce_letter(i.parentElement);
     }
 
-    document.querySelectorAll('#content table.course_details.student_grades tr td.course form input').forEach(x => x.addEventListener('click', function() {buttonupdate(x)})) // for whatever reason ```x.addEventListener('click', buttonupdate(x)))``` dosen't work
+    document.querySelectorAll('#content table.course_details.student_grades tr td.course form input').forEach(x => x.addEventListener('click', function() {buttonupdate(x)})); // for whatever reason ```x.addEventListener('click', buttonupdate(x)))``` dosen't work
 
-    rendergrades()
-    apce_check()
+    rendergrades();
+    apce_check();
 })
