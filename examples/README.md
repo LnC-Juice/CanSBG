@@ -21,4 +21,4 @@ add https://lnc-juice.github.io/example/cansbg/ to your manifest.
 }
 ```
 
-And open the [site](https://lnc-juice.github.io/example/cansbg/) to test.
+And open the [site](https://lnc.kiwifrin.com/example/cansbg/) to test.
