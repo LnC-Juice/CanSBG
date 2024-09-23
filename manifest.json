@@ -8,7 +8,7 @@
     {
       "matches": [
         "https://stem.instructure.com/grades",
-        "https://lnc-juice.github.io/example/cansbg/"
+        "https://lnc.kiwifrin.com/example/cansbg/"
       ],
       "js": ["cansbg-grades.js"]
     }
