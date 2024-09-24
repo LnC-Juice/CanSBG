@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "CanSBG",
   "description": "Canvas view all grades for SBG",
-  "version": "0.0.2",
+  "version": "0.0.3",
 
   "icons": {
     "128": "cansbg.png"
