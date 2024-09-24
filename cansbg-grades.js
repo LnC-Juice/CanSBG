@@ -48,8 +48,8 @@ function apce_check() {
     for (let i of document.querySelectorAll('#content table.course_details.student_grades tr .course a')) {
         if (!(
             (i.textContent[0] === '*') |
-            (i.textContent.slice(1,3) === 'CE') |
-            (i.textContent.slice(1,3) === 'AP') |
+            (i.textContent.slice(0,2) === 'CE') |
+            (i.textContent.slice(0,2) === 'AP') |
             (i.textContent.slice(0,24) === 'Certified Ethical Hacker') | // CEH /= SBG
             (i.parentElement.parentElement.querySelector('.percent:not(.cansbg)').textContent == 'no grade') |
             (i.parentElement.parentElement.querySelector('.percent:not(.cansbg)').textContent == '--')
